@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import Canvas from "../components/Home/Canvascopy"
+import Canvas from "../components/Home/Canvas"
 import DragOverMenu from "../potals/DragOverMenu"
 import styles from "./Home.module.css"
 import LoadingSpinner from '../components/ui/LoadingSpinner'

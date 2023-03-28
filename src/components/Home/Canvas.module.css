@@ -1,24 +1,3 @@
-canvas{
-    border: 1px solid black;
-}
-.backdrop{
-    width: 90%;
-}
-.cropped{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-.cropped-container{
-    margin: 16px;
-    padding: 16px;
-
-}
-.canvas-container{
-    display: flex;
-    justify-content: center;
-}
-.mask{
-    position: absolute;
-    border: 2px solid red;
+.canvas-container {
+    position: relative;
 }
