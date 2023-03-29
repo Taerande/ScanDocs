@@ -25,7 +25,7 @@ export const binaryTransform = (inputId, outputId) => {
   src.delete(); gray.delete(); dst.delete();
 }
 
-export const perspectiveTransform = (inputId, outputId, points) => {
+export const perspectiveTransform = (inputId, points) => {
   // 변환되는 이미지의 가로 세로 
   const width = Math.round(Math.max(
     norm(subtract(points[0], points[1])), norm(subtract(points[2], points[3])))
@@ -52,8 +52,41 @@ export const perspectiveTransform = (inputId, outputId, points) => {
   // cv.BORDER_CONSTANT 테두리 인접색으로 적용
   cv.warpPerspective(src, dst, M, dsize, cv.INTER_CUBIC, cv.BORDER_CONSTANT, new cv.Scalar());
   cv.imshow('result', dst);
+  let reDst = new cv.Mat();
+  cv.resize(dst, reDst, dsize, 0, 0, cv.INTER_AREA);
+  cv.imshow(inputId, reDst);
   // 메모리 해제
   src.delete(); dst.delete(); M.delete(); srcTri.delete(); dstTri.delete();
 
 }
 
+
+
+// export const foregroundExtraction = (inputId, inputRect) => {
+//   let src = cv.imread(inputId);
+//   cv.cvtColor(src, src, cv.COLOR_RGBA2RGB, 0);
+//   let mask = new cv.Mat();
+//   let bgdModel = new cv.Mat();
+//   let fgdModel = new cv.Mat();
+//   let rect = new cv.Rect(inputRect.x, inputRect.y, inputRect.w, inputRect.h);
+//   cv.grabCut(src, mask, rect, bgdModel, fgdModel, 1, cv.GC_INIT_WITH_RECT);
+//   // draw foreground
+//   for (let i = 0; i < src.rows; i++) {
+//       for (let j = 0; j < src.cols; j++) {
+//           if (mask.ucharPtr(i, j)[0] == 0 || mask.ucharPtr(i, j)[0] == 2) {
+//               src.ucharPtr(i, j)[0] = 0;
+//               src.ucharPtr(i, j)[1] = 0;
+//               src.ucharPtr(i, j)[2] = 0;
+//           }
+//       }
+//   }
+//   // draw grab rect
+//   let color = new cv.Scalar(0, 0, 255);
+//   let point1 = new cv.Point(rect.x, rect.y);
+//   let point2 = new cv.Point(rect.x + rect.width, rect.y + rect.height);
+//   cv.rectangle(src, point1, point2, color);
+//   cv.imshow(`result-${inputId}`, src);
+//   src.delete(); mask.delete(); bgdModel.delete(); fgdModel.delete();
+
+
+// }

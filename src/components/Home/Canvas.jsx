@@ -18,6 +18,7 @@ const Canvas = () => {
                 <button onClick={() => {
                     maskCanvas.current.transformImage();
                     setOpenMask(false);
+                    document.getElementById('uploaded-image').src = document.getElementById('result').toDataURL();
                 }}>transform Image</button>
                 <button onClick={() => setOpenMask(!openMask)}>make Mask</button>
             </div>
@@ -25,7 +26,7 @@ const Canvas = () => {
                 <MainCanvas ref={mainCanvas}/>
                 {openMask && <MaskCanvas ref={maskCanvas} />}
             </div>
-            <canvas id='result'></canvas>
+            <canvas style={{display:'none'}} id='result'></canvas>
         </div>
     )
 

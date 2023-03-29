@@ -2,6 +2,9 @@ import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "re
 import styles from './MainCanvas.module.css'
 import closeSvg from '../../../assets/svgs/close-circle.svg'
 import stretchSvg from '../../../assets/svgs/stretch-arrow.svg'
+import Tesseract from 'tesseract.js';
+import { binaryTransform } from "../../../functions/transform";
+import ProgressBar from "../../ui/ProgressBar";
 const colorSet = [
   "#1f77b4", // Blue
   "#ff7f0e", // Orange
@@ -49,7 +52,7 @@ const MainCanvas = forwardRef((props, ref) => {
             croppedCanvas = document.getElementById(`canvas${id}`);
             if (croppedCanvas) {
                 croppedImg = ctx.getImageData(x, y, w, h);
-                crpCtx = croppedCanvas.getContext('2d');
+                crpCtx = croppedCanvas.getContext('2d',{willReadFrequently: true});
                 crpCtx.clearRect(0, 0, croppedCanvas.width, croppedCanvas.height);
                 croppedCanvas.width = w;
                 croppedCanvas.height = h;
@@ -80,7 +83,7 @@ const MainCanvas = forwardRef((props, ref) => {
         const canvas = canvasRef.current;
         // set canvas size
         
-        const context = canvas.getContext('2d');
+        const context = canvas.getContext('2d', { willReadFrequently: true });
         let animationFrameId;
 
         const render = () => {
@@ -109,8 +112,10 @@ const MainCanvas = forwardRef((props, ref) => {
         
         const canvas = canvasRef.current;
         const rect = canvas.getBoundingClientRect();
-        const offsetX = e.clientX - rect.left;
-        const offsetY = e.clientY - rect.top;
+         let xPointer = e.type === 'touchmove' ? e.targetTouches[0].clientX : e.clientX
+        let yPointer = e.type === 'touchmove' ? e.targetTouches[0].clientY : e.clientY
+        const offsetX = xPointer - rect.left;
+        const offsetY = yPointer - rect.top;
         
         let diffX;
         let diffY;
@@ -171,10 +176,13 @@ const MainCanvas = forwardRef((props, ref) => {
     }
     // 영역 확인 후 모드 설정
     const mouseDownHandler = (e) => {
+        // e.preventDefault();
+        let xPointer = e.type === 'touchstart' ? e.targetTouches[0].clientX : e.clientX
+        let yPointer = e.type === 'touchstart' ? e.targetTouches[0].clientY : e.clientY
         if (draggingIndex > -1) {
             const rect = canvasRef.current.getBoundingClientRect();
-            const offsetX = e.clientX - rect.left;
-            const offsetY = e.clientY - rect.top;
+            const offsetX = xPointer - rect.left;
+            const offsetY = yPointer - rect.top;
             setDx(offsetX - rectangles[draggingIndex].x);
             setDy(offsetY - rectangles[draggingIndex].y);
             setMode('move');
@@ -190,7 +198,8 @@ const MainCanvas = forwardRef((props, ref) => {
         }
     }
     // 초기화
-    const mouseUpHandler = () => {
+    const mouseUpHandler = (e) => {
+        // e.preventDefault();
         setMode('check');
 
     }
@@ -202,37 +211,70 @@ const MainCanvas = forwardRef((props, ref) => {
             y: 50,
             w: 100,
             h: 80,
+            progress: 0,
+            statement:'',
+            result:'',
         }, ...rectangles]);
     }
     const clearRectHandler = () => {
         setRectangles([]);
     }
 
-     useImperativeHandle(ref, () => ({
+    const ocrImgHandler = (id) => {
+        binaryTransform(`canvas${id}`, `result-canvas${id}`);
+        Tesseract.recognize(
+        document.getElementById(`result-canvas${id}`).toDataURL(),
+        'eng+kor+jpn',
+            {
+                logger: m => {
+                    setRectangles(prevRectangles => {
+                        const newRectangles = [...prevRectangles];
+                        const idxOfRect = newRectangles.findIndex(v => v.id === id);
+                        newRectangles[idxOfRect].progress = Math.floor(m.progress * 100);
+                        newRectangles[idxOfRect].statement = m.status;
+                        return newRectangles;
+                    });
+                }
+            }
+        ).then(({ data: { text } }) => {
+         setRectangles(prevRectangles => {
+             const newRectangles = [...prevRectangles];
+             const idxOfRect = newRectangles.findIndex(v => v.id === id);
+             newRectangles[idxOfRect].result = text;
+                return newRectangles;
+            });
+        })
+    }
+    
+    useImperativeHandle(ref, () => ({
         createRectHandler,
         clearRectHandler
-
-    }));
-    return (
-        <>
+     }));
+    
+     return (
+         <>
             <canvas
                 className={styles['main-canvas']}
                 onMouseDown={mouseDownHandler}
                 onMouseUp={mouseUpHandler}
                 onMouseMove={mouseMoveHandler}
-                // onTouchStart={mouseDownHandler}
-                // onTouchEnd={mouseUpHandler}
-                // onTouchMove={mouseMoveHandler}
+                onTouchStart={mouseDownHandler}
+                onTouchEnd={mouseUpHandler}
+                onTouchMove={mouseMoveHandler}
                 ref={canvasRef} id="main"></canvas>
             <div className={styles['cropped-container']}>
                 {rectangles.map((v, idx) => {
                     return (
                         <div key={idx} style={{ border: `2px ${v.color} dashed` }} className={styles['cropped-container']}>
+                            <button onClick={() => ocrImgHandler(v.id)}> Tesseract </button>
                             <div className={styles.cropped}>
                                 <canvas width={v.w} height={v.h} id={`canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
                             </div>
-                            <button onClick={() => ocrImgHandler(v.id)}> Tesseract </button>
-                            <button onClick={() => transHandler(v.id)}> hi </button>
+                            <ProgressBar value={v.progress} statement={v.statement} />
+                            <div className={styles.result}>
+                                { v.result }
+                            </div>
+                            <canvas style={{display:'none'}} id={`result-canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
                         </div>
                     )
                 })}

@@ -21,10 +21,10 @@ const MaskCanvas = forwardRef((props, ref) => {
         [0, 0],
     ]);
     const [maskPoints, setMaskPoints] = useState([
-        [10, 50],
-        [60, 30],
-        [70, 80],
-        [15, 75]
+        [50, 50],
+        [150, 50],
+        [150, 130],
+        [50, 130]
     ]);
     const draw = (ctx) => {
         // initailize background
@@ -150,12 +150,8 @@ const MaskCanvas = forwardRef((props, ref) => {
                     return (A == A1 + A2 + A3);
                 }
         
-                if (isInside([maskPoints[0], maskPoints[1], maskPoints[2]], offsetX, offsetY) || isInside([maskPoints[2], maskPoints[3], maskPoints[0]], offsetX, offsetY)) {
-                    mask.style.cursor = 'move';
-                    setMaskPointIndex(4);
-                    return
-                } else {
-                    mask.style.cursor = null;
+                if (!isInside([maskPoints[0], maskPoints[1], maskPoints[2]], offsetX, offsetY) && !isInside([maskPoints[2], maskPoints[3], maskPoints[0]], offsetX, offsetY)) {
+                       mask.style.cursor = null;
                     let maskIdx = -1;
                     maskPoints.forEach((el, idx) => {
                         if (Math.abs(offsetX - el[0]) < 16 && Math.abs(offsetY - el[1]) < 16) {
@@ -168,12 +164,19 @@ const MaskCanvas = forwardRef((props, ref) => {
                         mask.style.cursor = 'nesw-resize';
                     }
                     setMaskPointIndex(maskIdx);
+                    return
+                } else {
+                    mask.style.cursor = 'move';
+                    setMaskPointIndex(4);
+                    return
+                    
                 }
-        }
+            }
     }
 
     const transformImage = () => {
-        perspectiveTransform('main', 'main', maskPoints)
+        perspectiveTransform('main', maskPoints);
+        setCanvasSize()
     }
     useImperativeHandle(ref, () => ({
         transformImage,
