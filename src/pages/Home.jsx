@@ -1,68 +1,64 @@
-import { useEffect, useRef, useState } from "react"
-import Canvas from "../components/Home/Canvas"
-import DragOverMenu from "../potals/DragOverMenu"
-import styles from "./Home.module.css"
-import LoadingSpinner from '../components/ui/LoadingSpinner'
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
+import styles from './Home.module.css'
 const Home = () => {
-    const filInputRef = useRef();
-    const [openDrag, setopenDrag] = useState(false);
-    const [imgUrl, setImgUrl] = useState();
-    const [imgLoad, setImgLoad] = useState(false);
-    const handleDrop = async (event) => {
-        event.preventDefault();
-        setImgUrl(null);
-        setImgLoad(true);
-        let file;
-        if (event.type === 'drop') {
-            file = event.dataTransfer.files[0];
-        } else if (event.type === 'change') {
-            file = event.target.files[0];
-        }
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            setImgUrl(event.target.result);
-        };
-        reader.readAsDataURL(file);
-    };
+    const [draggable, setDraggable] = useState(false);
+    const mouseDownHandler = (e) => {
+        e.preventDefault();
+        if (e.target.id !== 'handle') return
+        setDraggable(true);
+
+    }
+    const mouseMoveHandler = (e) => {
+        e.preventDefault();
+        const landing = document.getElementById('landing');
+        if (!draggable) return
+        if(e.clientX < 50 || e.clientX > landing.clientWidth) return
+        const handle = document.getElementById('handle');
+        const before = document.getElementById('before-container');
+        handle.style.left = e.clientX - 18 - 8 + 'px';
+        before.style.width = e.clientX -18 + 'px';
+
+    }
+    const mouseUpHandler = (e) => {
+        setDraggable(false)
+
+    }
     useEffect(() => {
-        addEventListener('dragover', e => {
-            e.preventDefault();
-            setopenDrag(true);
-                const uploadContainer = document.getElementById('upload-image');
-                if (uploadContainer) {
-                    uploadContainer.addEventListener('drop', event => {
-                        event.preventDefault();
-                        setopenDrag(false);
-                        handleDrop(event);
-                    });
-                }
-        });
-        addEventListener('drop', e => {
-            e.preventDefault();
-            setopenDrag(false);
-        });
+        const landing = document.getElementById('landing');
+        landing.addEventListener('mousedown', mouseDownHandler)
+        landing.addEventListener('mousemove', mouseMoveHandler)
+        landing.addEventListener('mouseup', mouseUpHandler)
+    
         return () => {
-        }
-    }, []);
-    return <>
-        <img className="image-responsive"
-            id="uploaded-image" src={imgUrl} style={{ display: 'none' }} />
-        <input type="file"  accept="image/*" ref={filInputRef} style={{display:'none'}} onChange={handleDrop} />
+          landing.removeEventListener('mousedown',mouseDownHandler)
+          landing.removeEventListener('mousemove',mouseMoveHandler)
+          landing.removeEventListener('mouseup',mouseUpHandler)
         
-        {openDrag && <DragOverMenu onClose={() => setopenDrag(false)}>
-            <div className={styles['back-drop']}>
-                <div className={styles['upload-container']} id="upload-image">
-                    📸 Upload Your Image
+      }
+    }, [draggable])
+    
+    return (
+        <>
+            <div id="landing" className={styles['landing-container']}>
+                <div id="before-container" className={styles['before-container']}>
+                    <img className={styles['scan-before']} src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=720&q=80"/>
+                </div>
+                <div id="after-container" className={ styles['after-container']}>
+                    <img className={styles['scan-after']} src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80" />
+                </div>
+                <div id="handle" className={styles.handle}>
+                    <div></div>
                 </div>
             </div>
-        </DragOverMenu>}
-        {imgUrl ? <Canvas changeImg={() => filInputRef.current.click()} /> : <>
-            {imgLoad ? <LoadingSpinner /> : <div className={ styles['plz-upload']} onClick={() => filInputRef.current.click()}>
-                Click or Drag & Drop <br/>
-                Upload Your Image📸
-            </div>}
-        </>}
-    </>
+                {/* Landing Imagese and Click To action to ocr page */}
+                <Link to="/ocr">to Ocr</Link>
+            <div>
+                Free to Use, No Limit, Edit Image
+            </div>
+            <div>
+                    howto use it carousel
+            </div>
+        </>)
 }
-
 export default Home

@@ -176,7 +176,8 @@ const MainCanvas = forwardRef((props, ref) => {
     }
     // 영역 확인 후 모드 설정
     const mouseDownHandler = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
+        console.log(e);
         let xPointer = e.type === 'touchstart' ? e.targetTouches[0].clientX : e.clientX
         let yPointer = e.type === 'touchstart' ? e.targetTouches[0].clientY : e.clientY
         if (draggingIndex > -1) {
@@ -255,12 +256,9 @@ const MainCanvas = forwardRef((props, ref) => {
          <>
             <canvas
                 className={styles['main-canvas']}
-                onMouseDown={mouseDownHandler}
-                onMouseUp={mouseUpHandler}
-                onMouseMove={mouseMoveHandler}
-                onTouchStart={mouseDownHandler}
-                onTouchEnd={mouseUpHandler}
-                onTouchMove={mouseMoveHandler}
+                onPointerDown={mouseDownHandler}
+                onPointerUp={mouseUpHandler}
+                onPointerMove={mouseMoveHandler}
                 ref={canvasRef} id="main"></canvas>
             <div className={styles['cropped-container']}>
                 {rectangles.map((v, idx) => {
