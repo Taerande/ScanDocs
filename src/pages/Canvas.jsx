@@ -37,6 +37,7 @@ const Canvas = () => {
         reader.readAsDataURL(file);
     };
     useEffect(() => {
+        if(imgUrl) return
         addEventListener('dragover', e => {
             e.preventDefault();
             setopenDrag(true);
@@ -58,7 +59,7 @@ const Canvas = () => {
         });
         return () => {
         }
-    }, []);
+    }, [imgUrl]);
     return <>
         {!opencvLoaded && <DragOverMenu>
             <div className={styles['opencv-loader-backdrop']}>

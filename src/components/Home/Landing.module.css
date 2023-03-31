@@ -1,0 +1,81 @@
+.landing-container {
+    /* max-width: 800px; */
+    width: 600px;
+    height: 300px;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+.before-container {
+    position: absolute;
+    width: 600px;
+    width: 50%;
+    top: 0;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.after-container {
+    position: absolute;
+    width: 600px;
+    top: 0;
+    overflow: hidden;
+}
+
+.scan-after,
+.scan-before {
+    height: 100%;
+    pointer-events: none;
+}
+
+.handle {
+    position: absolute;
+    left: calc(20% - 5px);
+    transform: translateX(-50%);
+    height: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    cursor: ew-resize;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.handle>div {
+    height: 100%;
+    width: 1px;
+    background-color: var(--success-color);
+    border-right: 1px solid var(--success-color);
+    border-left: 1px solid var(--success-color);
+    pointer-events: none;
+    position: relative;
+}
+.handleIcon{
+    z-index: 3;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    
+}
+.statement{
+    position: absolute;
+    top: 5%;
+    left: 10%;
+    /* background-color: white; */
+    border-radius: 8px;
+    font-weight: 800;
+    padding: 10px;
+    z-index: 20;
+}

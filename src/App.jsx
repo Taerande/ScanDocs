@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Canvas from './pages/Canvas'
 // Lazy loading
 const Test = React.lazy(() => import('./pages/Test'));
+const Contact = React.lazy(() => import('./pages/Contact'));
 // const Canvas = React.lazy(() => import('./pages/Canvas'));
 // const NotFound = React.lazy(() => import('./pages/NotFound'));
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path='/' element={<Home/>}/>
             <Route path='/ocr' element={<Canvas/>}/>
             <Route path='/test' element={<Test />} />
+            <Route path='/contact' element={<Contact />} />
             <Route
               path="*"
               element={<Navigate replace to="/" />} />

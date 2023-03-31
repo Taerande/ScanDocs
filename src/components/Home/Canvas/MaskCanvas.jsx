@@ -117,6 +117,7 @@ const MaskCanvas = forwardRef((props, ref) => {
     }
     // 모드 설정
     const mouseMoveHandler = (e) => {
+        e.preventDefault();
         const rect = canvasRef.current.getBoundingClientRect();
         const offsetX = e.clientX - rect.left;
         const offsetY = e.clientY - rect.top;

@@ -1,7 +1,7 @@
 .footer{
     padding-top: 16px;
     bottom: 0;
-    font-size: 12px;
+    font-size: 14px;
     color: var(--success-color);
     background-color: var(--dark-color);
 }
@@ -13,16 +13,23 @@
 .category{
     text-align: center;
 }
+.category >div:first-child{
+    font-weight: 700;
+}
 .category > div:first-child::after{
     display: block;
     margin: 1px 0px;
     content: "";
-    border-bottom: 1px solid var(--info-color);
+    border-bottom: 1px solid var(--light-color);
 }
 .category > a{
     cursor: pointer;
+    color: var(--success-color);
     text-decoration: none;
 }
+/* .category > a:visited{
+    text-decoration: none;
+} */
 .category > a::after{
     display: block;
     content: "";

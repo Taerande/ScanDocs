@@ -225,9 +225,10 @@ const MainCanvas = forwardRef((props, ref) => {
         binaryTransform(`canvas${id}`, `result-canvas${id}`);
         Tesseract.recognize(
         document.getElementById(`result-canvas${id}`).toDataURL(),
-        'eng+kor+jpn',
+        'eng+jpn',
             {
                 logger: m => {
+                    console.log(m);
                     setRectangles(prevRectangles => {
                         const newRectangles = [...prevRectangles];
                         const idxOfRect = newRectangles.findIndex(v => v.id === id);
