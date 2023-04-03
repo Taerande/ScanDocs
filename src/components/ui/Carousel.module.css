@@ -1,82 +1,96 @@
-.carousel {
+.container{
     position: relative;
-    margin: 20px 0;
+    width: 100%;
+    overflow: hidden;
+    height: 450px;
+}
+.carousel{
+    position: absolute;
+    width: 100%;
+    transition: left 0.3s ease-in;
+    
+}
+.carousel-item{
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    /* left:50%; */
+    /* transform: translate(-50%, -50%); */
+    text-align: center;
     overflow: hidden;
 }
-
-.carouselContainer {
-    position: relative;
-    width: 100%;
-    min-height: 300px;
-    transition: transform 0.2s ease;
+@media (max-width:1000px){
+    .image {
+        width: 100%;
+        max-width: 400px;
+    }
 }
-
-.carouselItem {
-    position: absolute;
-    top: 0;
+.image{
     width: 100%;
-    height: 100%;
+    max-width: 800px;
+}
+.nextBtn{
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--success-color);
+    background-color: var(--light-color);
+    transform: translateY(-50%);
     display: flex;
     justify-content: center;
     align-items: center;
 }
-
-.prevButton,
-.nextButton {
+.prevBtn{
+    padding: 0;
+    margin: 0;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
     position: absolute;
+    left: 0;
     top: 50%;
-    transform: translateY(-50%);
-    padding: 10px;
     font-size: 24px;
+    font-weight: 900;
     color: var(--success-color);
+    background-color: var(--light-color);
+    transform: translateY(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.statement{
     font-weight: 700;
-    font-size: 2rem;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
+    padding: 16px;
 }
-.prevButton:disabled,
-.nextButton:disabled{
-    cursor: not-allowed;
-    color: gray;
-}
-
-.controller {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 100%;
-}
-.prevButton {
-    left: 10px;
-}
-
-.nextButton {
-    right: 10px;
-}
-.shortchut{
+.dots{
     position: absolute;
     bottom: 10px;
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
     left: 50%;
+    background-color: #eee;
+    padding: 4px 10px;
+    border-radius: 50px;
     transform: translateX(-50%);
+    z-index: 5;
 }
-.shortcutButton {
-    padding: 0;
-    width: 15px;
-    height: 15px;
-    margin: 0 5px;
-    border-radius: 50%;
-    background-color: lightgray;
+.dot{
     cursor: pointer;
-}
-.shortcutButtonActive {
-    padding: 0;
-    width: 15px;
-    height: 15px;
-    margin: 0 5px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
+    border: 1px solid var(--dark-color);
+    /* background-color: var(--dark-color); */
+    background-color: var(--light-color);
+}
+.activated{
     background-color: var(--success-color);
-    cursor: pointer;
 }

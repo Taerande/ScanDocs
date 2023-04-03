@@ -16,7 +16,7 @@ const Footer = () => {
             <div className={styles.category}>
                 <div>Accessability</div>
                 <Link to="/contact">Contact</Link>
-                <a>How to use</a>
+                <Link to="/howtouse">How to Use</Link>
             </div>
         </div>
         <div className={ styles.copyright}>

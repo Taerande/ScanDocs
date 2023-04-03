@@ -1,67 +1,44 @@
-import React, { useEffect, useRef, useState } from "react";
-import styles from "./Carousel.module.css";
-import CarouselItem from "./CarouselItem";
-const Carousel = ({ children }) => {
-    const containerRef = useRef(null);
-    const [carouselIndex, setCarouselIndex] = useState(0);
+import { useRef, useState } from 'react'
+import styles from './Carousel.module.css'
 
-    const handlePrevClick = () => {
-        setCarouselIndex(carouselIndex - 1);
-    };
+const Carousel = ({ item }) => {
+    const carouselRef = useRef(null);
+    const [selectedIdx, setSelectedIdx] = useState(0);
 
-    const handleNextClick = () => {
-        setCarouselIndex(carouselIndex + 1);
-    };
-
-    const handleShortcutClick = (index) => {
-        setCarouselIndex(index);
-    };
-    useEffect(() => {
-        const carousel = containerRef.current;
-        carousel.style.transform = `translate(-${carouselIndex*100}%)`;
-
-    },[carouselIndex])
-
-  return (
-    <div className={styles.carousel}>
-      <div className={styles.carouselContainer} ref={containerRef}>
-        {children.map((child, index) => (
-            <CarouselItem key={index} index={index}>
-            {child}
-            </CarouselItem>
-        ))}
-      </div>
-          <div className={styles.controller}>
-              <div className={styles.prevNext}>
-                <button
-            className={styles.prevButton}
-            onClick={handlePrevClick}
-            disabled={carouselIndex === 0}
-            >
-            &lt;
-            </button>
-            <button
-            className={styles.nextButton}
-            onClick={handleNextClick}
-            disabled={carouselIndex === children.length - 1}
-            >
-            &gt;
-            </button>
-              </div>
-              <div className={ styles.shortchut}>
-            {children.map((child, index) => (
-            <button
-                key={index}
-                className={
-                carouselIndex === index ? styles.shortcutButtonActive : styles.shortcutButton
-                }
-                onClick={() => handleShortcutClick(index)}
-            />
-            ))}
+    const nextBtn = () => {
+        if(selectedIdx > item.length - 2) return
+        carouselRef.current.style.left = `${-(selectedIdx +1)* 100}%`;
+        setSelectedIdx(prev => prev + 1);
+    }
+    const prevBtn = () => {
+        if(selectedIdx < 1) return
+        carouselRef.current.style.left = `${-(selectedIdx-1) * 100}%`;
+        setSelectedIdx(prev => prev - 1);
+    }
+    const shortcut = (idx) => {
+        carouselRef.current.style.left = `${-idx* 100}%`;
+        setSelectedIdx(idx);
+    }
+    return (
+        <div className={styles.container}>
+            <div className={styles.carousel} ref={carouselRef}>
+                {item.map((v, index) => {
+                    return (<div key={index} className={ styles['carousel-item']} style={{left: `${index*100}%`}}>
+                        <div className={ styles.statement}>{ v.text }</div>
+                        <img src={v.imgUrl} alt="howtouse_image" className={ styles.image }/>
+                    </div>)
+                })}
             </div>
-      </div>
-    </div>
-  );
-};
+            <button className={ styles.nextBtn } disabled={selectedIdx === item.length - 1} onClick={nextBtn}>&gt;</button>
+            <button className={ styles.prevBtn } disabled={selectedIdx === 0} onClick={prevBtn}>&lt;</button>
+            <div className={styles.dots}>
+                {item.map((v, idx) => {
+                    return (
+                        <div key={idx} onClick={() => { shortcut(idx) }} className={ `${styles.dot} ${idx===selectedIdx ? styles.activated : '' }`}></div>)
+                })}
+            </div>
+        </div>
+    )
 
-export default Carousel;
+}
+export default Carousel

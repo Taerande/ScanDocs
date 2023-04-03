@@ -55,6 +55,13 @@ button {
 button:hover {
   border-color: var(--success-color);
 }
+button:disabled{
+  cursor: not-allowed;
+  color: #b3c0cb;
+}
+button:disabled:hover{
+  border-color: var(--light-color);
+}
 button:focus,
 button:focus-visible {
   outline: 4px auto var(--success-color);

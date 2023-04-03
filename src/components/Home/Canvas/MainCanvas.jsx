@@ -27,6 +27,7 @@ closeBtn.src = closeSvg;
 stretchBtn.src = stretchSvg;
 
 const MainCanvas = forwardRef((props, ref) => {
+    console.log('h');
     const uploadedImage = document.getElementById('uploaded-image');
     const canvasRef = useRef(null);
     
@@ -112,8 +113,8 @@ const MainCanvas = forwardRef((props, ref) => {
         
         const canvas = canvasRef.current;
         const rect = canvas.getBoundingClientRect();
-         let xPointer = e.type === 'touchmove' ? e.targetTouches[0].clientX : e.clientX
-        let yPointer = e.type === 'touchmove' ? e.targetTouches[0].clientY : e.clientY
+        let xPointer = e.type === 'touchmove' ? e.touches[0].clientX : e.clientX
+        let yPointer = e.type === 'touchmove' ? e.touches[0].clientY : e.clientY
         const offsetX = xPointer - rect.left;
         const offsetY = yPointer - rect.top;
         
@@ -176,8 +177,8 @@ const MainCanvas = forwardRef((props, ref) => {
     }
     // 영역 확인 후 모드 설정
     const mouseDownHandler = (e) => {
-        e.preventDefault();
-        console.log(e);
+        // e.preventDefault();
+        if(e.type === 'touchstart') { document.body.style.overflow = 'hidden'}
         let xPointer = e.type === 'touchstart' ? e.targetTouches[0].clientX : e.clientX
         let yPointer = e.type === 'touchstart' ? e.targetTouches[0].clientY : e.clientY
         if (draggingIndex > -1) {
@@ -200,7 +201,10 @@ const MainCanvas = forwardRef((props, ref) => {
     }
     // 초기화
     const mouseUpHandler = (e) => {
-        // e.preventDefault();
+        e.preventDefault();
+        console.log('cancle');
+        console.log(e);
+        if(e.type === 'touchend') { document.body.style.overflow = null }
         setMode('check');
 
     }
@@ -225,7 +229,7 @@ const MainCanvas = forwardRef((props, ref) => {
         binaryTransform(`canvas${id}`, `result-canvas${id}`);
         Tesseract.recognize(
         document.getElementById(`result-canvas${id}`).toDataURL(),
-        'eng+jpn',
+        'eng',
             {
                 logger: m => {
                     console.log(m);
@@ -257,9 +261,12 @@ const MainCanvas = forwardRef((props, ref) => {
          <>
             <canvas
                 className={styles['main-canvas']}
-                onPointerDown={mouseDownHandler}
-                onPointerUp={mouseUpHandler}
-                onPointerMove={mouseMoveHandler}
+                 onMouseDown={mouseDownHandler}
+                 onMouseUp={mouseUpHandler}
+                 onMouseMove={mouseMoveHandler}
+                //  onTouchStart={mouseDownHandler}
+                //  onTouchEnd={mouseUpHandler}
+                //  onTouchMove={mouseMoveHandler}
                 ref={canvasRef} id="main"></canvas>
             <div className={styles['cropped-container']}>
                 {rectangles.map((v, idx) => {
@@ -273,7 +280,7 @@ const MainCanvas = forwardRef((props, ref) => {
                             <div className={styles.result}>
                                 { v.result }
                             </div>
-                            <canvas style={{display:'none'}} id={`result-canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
+                            <canvas  id={`result-canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
                         </div>
                     )
                 })}

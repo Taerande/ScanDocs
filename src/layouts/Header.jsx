@@ -5,7 +5,12 @@ const Header = () => {
         <>
             <div className={ styles.container}>
                 <div className={styles.header}>
-                    <div className={styles.logo}>logo section</div>
+                    <Link to='/'>
+                        <div className={styles.logo}>
+                                <img src="/icon.svg" alt="log_img" width="64" height="64" />
+                                <span>Scan Docs</span>
+                        </div>
+                    </Link>
                     <div className={styles.auth}>
                         <button>Log in</button>
                     </div>
