@@ -1,12 +1,3 @@
-.container{
-    margin: 0 200px;
-}
-
-@media (max-width:1000px) {
-    .container{
-        margin: 0;
-    }
-}
 .title{
     display: inline-block;
     left: 50%;

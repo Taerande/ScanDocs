@@ -4,12 +4,17 @@ const authSlice = createSlice({
     name: 'auth',
     initialState: {
         isLogin: false,
-        uid:null,
+        uid: null,
+        email: null,
         displayName: null,
-        photoUrl: null,
-        availableCharacters:[],
     },
     reducers: {
+        setAuth: (state, action) => {
+            state.isLogin = true;
+            state.uid = action.payload.uid;
+            state.email = action.payload.email;
+            state.displayName = action.payload.displayName;
+        }
     },
 });
 

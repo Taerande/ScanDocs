@@ -1,6 +1,11 @@
-.main{
-    /* position: relative; */
+.main {
     padding: 16px;
-    margin: 0 auto;
     min-height: 80vh;
+    margin: 0 200px;
+}
+
+@media (max-width:1000px) {
+    .main {
+        margin: 0 auto;
+    }
 }

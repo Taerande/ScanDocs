@@ -1,8 +1,8 @@
 .loading {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
 }
 
 .spinner {
@@ -12,6 +12,7 @@
 }
 
 .circle {
+    position: absolute;
     border: 5px solid #f3f3f3;
     border-top: 5px solid #333;
     border-radius: 50%;

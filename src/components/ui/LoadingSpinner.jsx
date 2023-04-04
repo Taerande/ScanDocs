@@ -2,7 +2,7 @@ import style from './LoadingSpinner.module.css'
 const LoadingSpinner = ({ size, color, width }) => {
 
     const values = {
-        size: size ? `${size*1}px` : '36px',
+        size: size ? `${size*1}px` : '16px',
         color: color ? color.includes('#') ? color : `var(--${color}-color)` : '#333',
         width: width ? `${width*1}px` : '3px'
     }
@@ -15,6 +15,8 @@ const LoadingSpinner = ({ size, color, width }) => {
     const circleStyles = {
         width: values.size,
         height: values.size,
+        top: width ? `-${width*1}px` : '-3px',
+        left: width ? `-${width*1}px` : '-3px',
         'border': values.width+' solid #f3f3f3',
         'borderTop': values.width+' solid '+values.color,
     }

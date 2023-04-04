@@ -1,6 +1,10 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css'
+import { useSelector } from 'react-redux';
+
 const Header = () => {
+    const auth = useSelector(state => state.auth);
+    const navigate = useNavigate();
     return (
         <>
             <div className={ styles.container}>
@@ -12,7 +16,8 @@ const Header = () => {
                         </div>
                     </Link>
                     <div className={styles.auth}>
-                        <button>Log in</button>
+                        {auth.isLogin ? <span>{auth.displayName}</span> :
+                            <button onClick={() => navigate('/auth')}>Log in</button>}
                     </div>
                 </div>
                 <div className={styles.menu}>

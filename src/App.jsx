@@ -10,6 +10,7 @@ import Canvas from './pages/Canvas'
 const Test = React.lazy(() => import('./pages/Test'));
 const Contact = React.lazy(() => import('./pages/Contact'));
 const Howtouse = React.lazy(() => import('./pages/Howtouse'));
+const Auth = React.lazy(() => import('./pages/Auth'));
 // const Canvas = React.lazy(() => import('./pages/Canvas'));
 // const NotFound = React.lazy(() => import('./pages/NotFound'));
 function App() {
@@ -33,6 +34,7 @@ function App() {
             <Route path='/test' element={<Test />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/howtouse' element={<Howtouse />} />
+            <Route path='/auth' element={<Auth />} />
             <Route
               path="*"
               element={<Navigate replace to="/" />} />

@@ -1,0 +1,27 @@
+.container{
+    position: absolute;
+    max-width: 600px;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    transform: translate(-50%, -50%);
+}
+.submitBtn{
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup{
+    padding: 16px 0px;
+    font-size: 14px;
+}
+.welcome{
+    padding: 30px 0px;
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+}
