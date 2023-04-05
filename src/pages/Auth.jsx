@@ -3,18 +3,20 @@ import Input from "../components/ui/Input";
 import { getAuth } from "../firebase/firebase"
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 const Auth = () => {
     const [authLoading, setAuthLoading] = useState(false);
+    const navigate = useNavigate();
 
     const loginHandler = (e) => {
-         e.preventDefault();
+        e.preventDefault();
         setAuthLoading(!authLoading)
-        // getAuth(e.target.email.value, e.target.password.value);
+        getAuth(e.target.email.value, e.target.password.value).then(() => {
+            navigate('/');
+        }).catch(() => {
+            // error 처리
+        });
     }
-
-
-
     return (
         <>
             <div className={styles.container}>
@@ -30,7 +32,7 @@ const Auth = () => {
                 </form>
                 <div className={styles.signup}>
                     
-                    Don't have an account? <Link to='/signup'>Sign up</Link>
+                    Don't have an account? <Link to='/register'>Sign up</Link>
                 </div>
             </div>
         </>

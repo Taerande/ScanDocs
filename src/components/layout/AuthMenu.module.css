@@ -1,0 +1,70 @@
+.container{
+    position: absolute;
+    animation-duration: .3s;
+    animation-timing-function: ease-out forwards;
+    z-index: 1;
+    margin: 10px 0px;
+    padding: 10px 0px;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #f2f2f2;
+    box-shadow: 0px 4px 2px -2px rgba(0, 0, 0, 0.2),
+            0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+            0px 2px 6px 0px rgba(0, 0, 0, 0.12);
+    right: 0;
+    width: 100px;
+}
+
+.fade-in {
+    animation-name: fadeIn;
+}
+.fade-out {
+    animation-name: fadeOut;
+}
+
+@keyframes fadeIn {
+    from {
+        transform: translateY(-3rem);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-3rem);
+        opacity: 0;
+    }
+}
+.options{
+    padding: 10px 0px;
+    cursor: pointer;
+    font-size: 14px;
+    overflow: hidden;
+}
+.optionTitle{
+    padding: 0px;
+    font-weight: 900;
+    font-size: 16px;
+}
+.options:hover {
+    background-color: #f2f2f2;
+    color: var(--alert-color);
+}
+
+.controller >div::after{
+    position: absolute;
+    content: "";
+    display: block;
+    width: 100px;
+    height: 1px;
+    border-bottom: 1px solid #ccc;
+}

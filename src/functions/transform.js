@@ -1,5 +1,7 @@
 import {norm, subtract} from 'mathjs';
 export const binaryTransform = (inputId, outputId) => {
+
+  const cv = window.cv;
   
   // inputId, oputId 확인
   let inputCanvas = document.getElementById(inputId);
@@ -26,6 +28,7 @@ export const binaryTransform = (inputId, outputId) => {
 }
 
 export const perspectiveTransform = (inputId, points) => {
+  const cv = window.cv;
   // 변환되는 이미지의 가로 세로 
   const width = Math.round(Math.max(
     norm(subtract(points[0], points[1])), norm(subtract(points[2], points[3])))

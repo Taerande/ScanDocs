@@ -1,31 +1,14 @@
-import { useEffect, useRef, useState } from "react"
-import MainCanvas from "../components/Home/Canvas/MainCanvas"
-import MaskCanvas from "../components/Home/Canvas/MaskCanvas"
-import styles from './Test.module.css'
+import MultiSelect from "../components/ui/MutiSelect"
 
 const Test = () => {
-    const mainCanvas = useRef(null);
-    const [imgLoaded, setImageLoaded] = useState(false);
-    const [openMask, setOpenMask] = useState(false);
     return (
-        <div>
-            <img id="target" src="./invoice.png" style={{ display: 'none' }} alt="" onLoad={() => setImageLoaded(true)} />
-            <div>
-                <button onClick={() => {
-                    mainCanvas.current.createRectHandler()
-                }}>create rect</button>
-                <button onClick={() => {
-                    mainCanvas.current.clearRectHandler()
-                }}>clear rect</button>
-                <button onClick={() => setOpenMask(!openMask)}>make Mask</button>
-            </div>
-            <div className={ styles['canvas-container']}>
-                {imgLoaded && <MainCanvas
-                    ref={mainCanvas}
-                />}
-                {imgLoaded && openMask && <MaskCanvas />}
-            </div>
-        </div>
+        <MultiSelect options={[
+            {id:0, value:'한국어', text:'한국어'},
+            {id:1, value:'ja', text: '日本語'},
+            {id:2, value:'kor', text: 'English'},
+            {id:3, value:'sadf', text: '123'},
+            {id:4, value:'asddd', text: '알바어'},
+        ]} onChange={(result) => console.log(result)} />
     )
 
 }

@@ -81,9 +81,15 @@ const Canvas = () => {
             </div>
         </DragOverMenu>}
         {imgUrl ? <CanvasContainer changeImg={() => filInputRef.current.click()} /> : <>
-            {imgLoad ? <LoadingSpinner /> : <div className={ styles['plz-upload']} onClick={() => filInputRef.current.click()}>
-                Click or Drag & Drop <br/>
-                Upload Your Image📸
+            {imgLoad ? <LoadingSpinner /> : <div className={styles['plz-upload']} onClick={() => filInputRef.current.click()}>
+                <div className={ styles['upload-message']}>
+                    <div>
+                        Upload Your Image📸
+                    </div>
+                    <div className={ styles.method}>
+                        Click, Drag & Drop
+                    </div>
+                </div>
             </div>}
         </>}
     </>

@@ -29,19 +29,26 @@
 }
 .plz-upload {
     margin: 0 auto;
-    text-align: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 30px;
     font-weight: 700;
     word-spacing: -3px;
     background: white;
-    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    max-width: 600px;
     height: 100px;
     border-radius: 30px;
     border: 3px black dashed;
     cursor: pointer;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2rem;
+}
+.upload-message{
+    text-align: center;
 }
 
 .opencv-loader-backdrop{
@@ -54,4 +61,10 @@
 }
 .opencv-loader-message{
     padding-top: 30px;
+}
+.method{
+    padding: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--alert-color);
 }

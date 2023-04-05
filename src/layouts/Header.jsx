@@ -1,8 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './Header.module.css'
 import { useSelector } from 'react-redux';
+import {  useState } from 'react';
+import AuthMenu from '../components/layout/AuthMenu';
 
 const Header = () => {
+    const [authMenuOpen, setAuthMenuOpen] = useState(false);
     const auth = useSelector(state => state.auth);
     const navigate = useNavigate();
     return (
@@ -16,8 +19,9 @@ const Header = () => {
                         </div>
                     </Link>
                     <div className={styles.auth}>
-                        {auth.isLogin ? <span>{auth.displayName}</span> :
+                        {auth.isLogin ? <div className={styles['auth-btn']} onClick={()=>setAuthMenuOpen(!authMenuOpen)}>{auth.displayName}</div> :
                             <button onClick={() => navigate('/auth')}>Log in</button>}
+                        {auth.isLogin && authMenuOpen && <AuthMenu onClose={()=>setAuthMenuOpen(false)}/>}
                     </div>
                 </div>
                 <div className={styles.menu}>

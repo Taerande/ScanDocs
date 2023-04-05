@@ -5,6 +5,7 @@ import stretchSvg from '../../../assets/svgs/stretch-arrow.svg'
 import Tesseract from 'tesseract.js';
 import { binaryTransform } from "../../../functions/transform";
 import ProgressBar from "../../ui/ProgressBar";
+import LoadingSpinner from "../../ui/LoadingSpinner";
 const colorSet = [
   "#1f77b4", // Blue
   "#ff7f0e", // Orange
@@ -216,6 +217,7 @@ const MainCanvas = forwardRef((props, ref) => {
             y: 50,
             w: 100,
             h: 80,
+            loading:false,
             progress: 0,
             statement:'',
             result:'',
@@ -225,7 +227,10 @@ const MainCanvas = forwardRef((props, ref) => {
         setRectangles([]);
     }
 
-    const ocrImgHandler = (id) => {
+    const ocrImgHandler = (id, index) => {
+        rectangles[index].loading = true;
+
+        
         binaryTransform(`canvas${id}`, `result-canvas${id}`);
         Tesseract.recognize(
         document.getElementById(`result-canvas${id}`).toDataURL(),
@@ -235,14 +240,15 @@ const MainCanvas = forwardRef((props, ref) => {
                     console.log(m);
                     setRectangles(prevRectangles => {
                         const newRectangles = [...prevRectangles];
-                        const idxOfRect = newRectangles.findIndex(v => v.id === id);
-                        newRectangles[idxOfRect].progress = Math.floor(m.progress * 100);
-                        newRectangles[idxOfRect].statement = m.status;
+                        // const idxOfRect = newRectangles.findIndex(v => v.id === id);
+                        newRectangles[index].progress = Math.floor(m.progress * 100);
+                        newRectangles[index].statement = m.status;
                         return newRectangles;
                     });
                 }
             }
         ).then(({ data: { text } }) => {
+        rectangles[index].loading = false;
          setRectangles(prevRectangles => {
              const newRectangles = [...prevRectangles];
              const idxOfRect = newRectangles.findIndex(v => v.id === id);
@@ -264,15 +270,17 @@ const MainCanvas = forwardRef((props, ref) => {
                  onMouseDown={mouseDownHandler}
                  onMouseUp={mouseUpHandler}
                  onMouseMove={mouseMoveHandler}
-                //  onTouchStart={mouseDownHandler}
-                //  onTouchEnd={mouseUpHandler}
-                //  onTouchMove={mouseMoveHandler}
                 ref={canvasRef} id="main"></canvas>
             <div className={styles['cropped-container']}>
                 {rectangles.map((v, idx) => {
                     return (
                         <div key={idx} style={{ border: `2px ${v.color} dashed` }} className={styles['cropped-container']}>
-                            <button onClick={() => ocrImgHandler(v.id)}> Tesseract </button>
+                            <button disabled={v.loading} onClick={() => ocrImgHandler(v.id, idx)}>
+                                {v.loading ?
+                                    <LoadingSpinner />
+                                    : <span>Start OCR</span>
+                                }
+                                </button>
                             <div className={styles.cropped}>
                                 <canvas width={v.w} height={v.h} id={`canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
                             </div>
@@ -280,7 +288,7 @@ const MainCanvas = forwardRef((props, ref) => {
                             <div className={styles.result}>
                                 { v.result }
                             </div>
-                            <canvas  id={`result-canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
+                            <canvas style={{display:'none'}} id={`result-canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
                         </div>
                     )
                 })}

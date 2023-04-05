@@ -16,12 +16,14 @@ const Root = () => {
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         store.dispatch(authActions.setAuth({
+          isLogin: true,
           uid: user.uid,
           email: user.email,
           displayName: user.displayName ? user.displayName : 'Anonymous'
         })); // authSlice의 setAuth로 user 정보 업데이트
       } else {
-        store.dispatch(setAuth({
+        store.dispatch(authActions.setAuth({
+          isLogin: false,
           uid: null,
           email: null,
           displayName: null
