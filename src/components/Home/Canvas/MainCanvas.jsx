@@ -6,6 +6,7 @@ import Tesseract from 'tesseract.js';
 import { binaryTransform } from "../../../functions/transform";
 import ProgressBar from "../../ui/ProgressBar";
 import LoadingSpinner from "../../ui/LoadingSpinner";
+import MultiSelect from "../../ui/MultiSelect";
 const colorSet = [
   "#1f77b4", // Blue
   "#ff7f0e", // Orange
@@ -18,6 +19,110 @@ const colorSet = [
   "#17becf", // Teal
   "#ff33cc"  // Magenta
 ];
+const languages = [
+    {id:0, value:"afr",	text:"Afrikaans"},
+    {id:1, value:"amh",	text:"Amharic"},
+    {id:2, value:"ara",	text:"Arabic"},
+    {id:3, value:"asm",	text:"Assamese"},
+    {id:4, value:"aze",	text:"Azerbaijani"},
+    {id:5, value:"aze_cyrl",	text:"Azerbaijani - Cyrillic"},
+    {id:6, value:"bel",	text:"Belarusian"},
+    {id:7, value:"ben",	text:"Bengali"},
+    {id:8, value:"bod",	text:"Tibetan"},
+    {id:9, value:"bos",	text:"Bosnian"},
+    {id:10, value:"bul",	text:"Bulgarian"},
+    {id:11, value:"cat",	text:"Catalan; Valencian"},
+    {id:12, value:"ceb",	text:"Cebuano"},
+    {id:13, value:"ces",	text:"Czech"},
+    {id:14, value:"chi_sim",	text:"Chinese - Simplified"},
+    {id:15, value:"chi_tra",	text:"Chinese - Traditional"},
+    {id:16, value:"chr",	text:"Cherokee"},
+    {id:17, value:"cym",	text:"Welsh"},
+    {id:18, value:"dan",	text:"Danish"},
+    {id:19, value:"deu",	text:"German"},
+    {id:20, value:"dzo",	text:"Dzongkha"},
+    {id:21, value:"ell",	text:"Greek, Modern (1453-)"},
+    {id:22, value:"eng",	text:"English"},
+    {id:23, value:"enm",	text:"English, Middle (1100-1500)"},
+    {id:24, value:"epo",	text:"Esperanto"},
+    {id:25, value:"est",	text:"Estonian"},
+    {id:26, value:"eus",	text:"Basque"},
+    {id:27, value:"fas",	text:"Persian"},
+    {id:28, value:"fin",	text:"Finnish"},
+    {id:29, value:"fra",	text:"French"},
+    {id:30, value:"frk",	text:"German Fraktur"},
+    {id:31, value:"frm",	text:"French, Middle (ca. 1400-1600)"},
+    {id:32, value:"gle",	text:"Irish"},
+    {id:33, value:"glg",	text:"Galician"},
+    {id:34, value:"grc",	text:"Greek, Ancient (-1453)"},
+    {id:35, value:"guj",	text:"Gujarati"},
+    {id:36, value:"hat",	text:"Haitian; Haitian Creole"},
+    {id:37, value:"heb",	text:"Hebrew"},
+    {id:38, value:"hin",	text:"Hindi"},
+    {id:39, value:"hrv",	text:"Croatian"},
+    {id:40, value:"hun",	text:"Hungarian"},
+    {id:41, value:"iku",	text:"Inuktitut"},
+    {id:42, value:"ind",	text:"Indonesian"},
+    {id:43, value:"isl",	text:"Icelandic"},
+    {id:44, value:"ita",	text:"Italian"},
+    {id:45, value:"ita_old",	text:"Italian - Old"},
+    {id:46, value:"jav",	text:"Javanese"},
+    {id:47, value:"jpn",	text:"Japanese"},
+    {id:48, value:"kan",	text:"Kannada"},
+    {id:49, value:"kat",	text:"Georgian"},
+    {id:50, value:"kat_old",	text:"Georgian - Old"},
+    {id:51, value:"kaz",	text:"Kazakh"},
+    {id:52, value:"khm",	text:"Central Khmer"},
+    {id:53, value:"kir",	text:"Kirghiz; Kyrgyz"},
+    {id:54, value:"kor",	text:"Korean"},
+    {id:55, value:"kur",	text:"Kurdish"},
+    {id:56, value:"lao",	text:"Lao"},
+    {id:57, value:"lat",	text:"Latin"},
+    {id:58, value:"lav",	text:"Latvian"},
+    {id:59, value:"lit",	text:"Lithuanian"},
+    {id:60, value:"mal",	text:"Malayalam"},
+    {id:61, value:"mar",	text:"Marathi"},
+    {id:62, value:"mkd",	text:"Macedonian"},
+    {id:63, value:"mlt",	text:"Maltese"},
+    {id:64, value:"msa",	text:"Malay"},
+    {id:65, value:"mya",	text:"Burmese"},
+    {id:66, value:"nep",	text:"Nepali"},
+    {id:67, value:"nld",	text:"Dutch; Flemish"},
+    {id:68, value:"nor",	text:"Norwegian"},
+    {id:69, value:"ori",	text:"Oriya"},
+    {id:70, value:"pan",	text:"Panjabi; Punjabi"},
+    {id:71, value:"pol",	text:"Polish"},
+    {id:72, value:"por",	text:"Portuguese"},
+    {id:73, value:"pus",	text:"Pushto; Pashto"},
+    {id:74, value:"ron",	text:"Romanian; Moldavian; Moldovan"},
+    {id:75, value:"rus",	text:"Russian"},
+    {id:76, value:"san",	text:"Sanskrit"},
+    {id:77, value:"sin",	text:"Sinhala; Sinhalese"},
+    {id:78, value:"slk",	text:"Slovak"},
+    {id:79, value:"slv",	text:"Slovenian"},
+    {id:80, value:"spa",	text:"Spanish; Castilian"},
+    {id:81, value:"spa_old",	text:"Spanish; Castilian - Old"},
+    {id:82, value:"sqi",	text:"Albanian"},
+    {id:83, value:"srp",	text:"Serbian"},
+    {id:84, value:"srp_latn",	text:"Serbian - Latin"},
+    {id:85, value:"swa",	text:"Swahili"},
+    {id:86, value:"swe",	text:"Swedish"},
+    {id:87, value:"syr",	text:"Syriac"},
+    {id:88, value:"tam",	text:"Tamil"},
+    {id:89, value:"tel",	text:"Telugu"},
+    {id:90, value:"tgk",	text:"Tajik"},
+    {id:91, value:"tgl",	text:"Tagalog"},
+    {id:92, value:"tha",	text:"Thai"},
+    {id:93, value:"tir",	text:"Tigrinya"},
+    {id:94, value:"tur",	text:"Turkish"},
+    {id:95, value:"uig",	text:"Uighur; Uyghur"},
+    {id:96, value:"ukr",	text:"Ukrainian"},
+    {id:97, value:"urd",	text:"Urdu"},
+    {id:98, value:"uzb",	text:"Uzbek"},
+    {id:99, value:"uzb_cyrl",	text:"Uzbek - Cyrillic"},
+    {id:100, value:"vie",	text:"Vietnamese"},
+    {id:101, value:"yid",	text:"Yiddish"},
+]
 
 const diameterBtn = 25;
 const radiusBtn = diameterBtn / 2;
@@ -28,7 +133,6 @@ closeBtn.src = closeSvg;
 stretchBtn.src = stretchSvg;
 
 const MainCanvas = forwardRef((props, ref) => {
-    console.log('h');
     const uploadedImage = document.getElementById('uploaded-image');
     const canvasRef = useRef(null);
     
@@ -72,9 +176,10 @@ const MainCanvas = forwardRef((props, ref) => {
       
     };
     const setCanvasSize = () => {
-        if (uploadedImage.width > innerWidth) {
-            canvasRef.current.width = innerWidth * 0.9;
-            canvasRef.current.height = innerWidth * 0.9 * uploadedImage.height / uploadedImage.width;
+        const maxWidth = document.getElementById('width-checker').clientWidth;
+        if (uploadedImage.width > maxWidth) {
+            canvasRef.current.width = maxWidth;
+            canvasRef.current.height = maxWidth * uploadedImage.height / uploadedImage.width;
         } else {
             canvasRef.current.width = uploadedImage.width;
             canvasRef.current.height = uploadedImage.height;
@@ -203,8 +308,6 @@ const MainCanvas = forwardRef((props, ref) => {
     // 초기화
     const mouseUpHandler = (e) => {
         e.preventDefault();
-        console.log('cancle');
-        console.log(e);
         if(e.type === 'touchend') { document.body.style.overflow = null }
         setMode('check');
 
@@ -220,7 +323,8 @@ const MainCanvas = forwardRef((props, ref) => {
             loading:false,
             progress: 0,
             statement:'',
-            result:'',
+            result: '',
+            lang:'',
         }, ...rectangles]);
     }
     const clearRectHandler = () => {
@@ -229,15 +333,12 @@ const MainCanvas = forwardRef((props, ref) => {
 
     const ocrImgHandler = (id, index) => {
         rectangles[index].loading = true;
-
-        
         binaryTransform(`canvas${id}`, `result-canvas${id}`);
         Tesseract.recognize(
         document.getElementById(`result-canvas${id}`).toDataURL(),
-        'eng',
+        rectangles[index].lang,
             {
                 logger: m => {
-                    console.log(m);
                     setRectangles(prevRectangles => {
                         const newRectangles = [...prevRectangles];
                         // const idxOfRect = newRectangles.findIndex(v => v.id === id);
@@ -257,6 +358,9 @@ const MainCanvas = forwardRef((props, ref) => {
             });
         })
     }
+    const setOcrLang = (lang, index) => {
+        rectangles[index].lang = lang;
+    }
     
     useImperativeHandle(ref, () => ({
         createRectHandler,
@@ -265,6 +369,7 @@ const MainCanvas = forwardRef((props, ref) => {
     
      return (
          <>
+            <div id="width-checker"></div>
             <canvas
                 className={styles['main-canvas']}
                  onMouseDown={mouseDownHandler}
@@ -275,12 +380,15 @@ const MainCanvas = forwardRef((props, ref) => {
                 {rectangles.map((v, idx) => {
                     return (
                         <div key={idx} style={{ border: `2px ${v.color} dashed` }} className={styles['cropped-container']}>
-                            <button disabled={v.loading} onClick={() => ocrImgHandler(v.id, idx)}>
-                                {v.loading ?
-                                    <LoadingSpinner />
-                                    : <span>Start OCR</span>
-                                }
+                            <div className={ styles['cropped-control-panel']}>
+                                <MultiSelect options={languages} onChange={(result) => setOcrLang(result, idx)} />
+                                 <button disabled={v.loading} onClick={() => ocrImgHandler(v.id, idx)}>
+                                    {v.loading ?
+                                        <LoadingSpinner />
+                                        : <span>Start OCR</span>
+                                    }
                                 </button>
+                            </div>
                             <div className={styles.cropped}>
                                 <canvas width={v.w} height={v.h} id={`canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
                             </div>

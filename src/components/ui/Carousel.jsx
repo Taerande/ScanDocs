@@ -1,9 +1,26 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import styles from './Carousel.module.css'
 
 const Carousel = ({ item }) => {
     const carouselRef = useRef(null);
+    const containerRef = useRef(null);
     const [selectedIdx, setSelectedIdx] = useState(0);
+    useEffect(() => {
+        addEventListener('resize', setCarouselHeight);
+        
+        return () => {
+            removeEventListener('resize', setCarouselHeight);
+        }
+    }, [])
+    const setCarouselHeight = () => {
+        const images = document.querySelectorAll('img');
+        const hwotouseImgs = Array.from(images).filter(img => img.alt === 'howtouse_image');
+
+        const tallestImg = hwotouseImgs.reduce((prev, current) => {
+        return prev.height > current.height ? prev : current;
+        });
+        containerRef.current.style.height = tallestImg.height + 50 + 'px';
+    }
 
     const nextBtn = () => {
         if(selectedIdx > item.length - 2) return
@@ -20,12 +37,14 @@ const Carousel = ({ item }) => {
         setSelectedIdx(idx);
     }
     return (
-        <div className={styles.container}>
+        <div className={styles.container} ref={containerRef}>
             <div className={styles.carousel} ref={carouselRef}>
                 {item.map((v, index) => {
-                    return (<div key={index} className={ styles['carousel-item']} style={{left: `${index*100}%`}}>
-                        <div className={ styles.statement}>{ v.text }</div>
-                        <img src={v.imgUrl} alt="howtouse_image" className={ styles.image }/>
+                    return (<div key={index} className={styles['carousel-item']} style={{ left: `${index * 100}%` }}>
+                        <div>
+                            <div className={ styles.statement}>{ v.text }</div>
+                            <img src={v.imgUrl} alt="howtouse_image" className={ styles.image }/>
+                        </div>
                     </div>)
                 })}
             </div>

@@ -1,13 +1,19 @@
 .multiSelect {
-    display: flex;
-    flex-direction: column;
-    font-family: sans-serif;
+    display: block;
+    padding: 16px 0px;
+    /* position: relative; */
 }
-
+.header{
+    display: flex;
+    justify-content: space-between;
+    /* align-items: center; */
+}
 .chips {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    margin-bottom: 8px;
+    min-height: 40px;
+    align-items: center;
 }
 
 .chip {
@@ -17,50 +23,71 @@
     border-radius: 16px;
     padding: 4px 8px;
     margin-right: 8px;
-    margin-bottom: 8px;
 }
-
+.statement{
+    width: 100%;
+    cursor: pointer;
+    font-size: 18px;
+}
 .closeButton {
     background-color: transparent;
     border: none;
     cursor: pointer;
     color: var(--alert-color);
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 900;
     margin-left: 4px;
 }
-
-.options {
+.buttonContainer{
     display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
+    align-items: center;
 }
 
+.options {
+    max-height: 300px;
+    overflow-y: scroll;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-flow: row;
+    justify-content: center;
+    margin: 0;
+}
 .option {
     display: flex;
     align-items: center;
-    margin-right: 16px;
-    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 10px;
+    border-right: 1px solid #2222;
+}
+.option:hover{
+    background-color: #2222;
 }
 
 input[type='checkbox'] {
     margin-right: 8px;
+    width: 16px;
+    height: 16px;
 }
 
 .clearButton {
-    background-color: #eee;
-    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
-    color: #333;
     cursor: pointer;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 8px 16px;
 }
-.clearButton:hover {
-    background-color: #ddd;
+.optionToggleBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    /* transition: transform 1s ease; */
+    /* transition: top 0.3s ease; */
 }
 
-.clearButton:active {
-    background-color: #ccc;
+.option-toggle-btn-on {
+    transform: rotate(0deg);
+}
+.option-toggle-btn-off {
+    transform: rotate(180deg);
 }

@@ -34,3 +34,9 @@ canvas {
     text-align: center;
     
 }
+.cropped-control-panel{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+}

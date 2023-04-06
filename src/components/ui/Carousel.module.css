@@ -2,7 +2,7 @@
     position: relative;
     width: 100%;
     overflow: hidden;
-    height: 450px;
+    min-height: 300px;
 }
 .carousel{
     position: absolute;
@@ -14,9 +14,11 @@
 .carousel-item{
     position: absolute;
     width: 100%;
-    top: 50%;
     text-align: center;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 @media (max-width:1000px){
     .image {
