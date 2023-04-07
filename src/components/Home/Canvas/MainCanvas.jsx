@@ -176,7 +176,7 @@ const MainCanvas = forwardRef((props, ref) => {
       
     };
     const setCanvasSize = () => {
-        const maxWidth = document.getElementById('width-checker').clientWidth;
+        const maxWidth = document.getElementById('canvas-container').clientWidth;
         if (uploadedImage.width > maxWidth) {
             canvasRef.current.width = maxWidth;
             canvasRef.current.height = maxWidth * uploadedImage.height / uploadedImage.width;
@@ -185,6 +185,12 @@ const MainCanvas = forwardRef((props, ref) => {
             canvasRef.current.height = uploadedImage.height;
         }
     }
+    
+    // 첫 canvas size 결정
+    useEffect(() => {
+        setCanvasSize();
+    }, [canvasRef.current])
+
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -207,11 +213,6 @@ const MainCanvas = forwardRef((props, ref) => {
         };
     }, [draw]);
 
-
-    // 첫 canvas size 결정
-    useEffect(() => {
-        setCanvasSize();
-    }, [])
 
 
     // 모드 설정
@@ -369,7 +370,6 @@ const MainCanvas = forwardRef((props, ref) => {
     
      return (
          <>
-            <div id="width-checker"></div>
             <canvas
                 className={styles['main-canvas']}
                  onMouseDown={mouseDownHandler}
@@ -390,13 +390,13 @@ const MainCanvas = forwardRef((props, ref) => {
                                 </button>
                             </div>
                             <div className={styles.cropped}>
-                                <canvas width={v.w} height={v.h} id={`canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
+                                <canvas width={v.w} height={v.h} id={`canvas${v.id}`}>Your browser don't support html canvas.</canvas>
                             </div>
                             <ProgressBar value={v.progress} statement={v.statement} />
                             <div className={styles.result}>
                                 { v.result }
                             </div>
-                            <canvas style={{display:'none'}} id={`result-canvas${v.id}`}>캔버스를 지원하지 않는 브라우저 환경입니다.</canvas>
+                            <canvas style={{display:'none'}} id={`result-canvas${v.id}`}>Your browser don't support html canvas.</canvas>
                         </div>
                     )
                 })}

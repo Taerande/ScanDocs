@@ -194,6 +194,7 @@ const MaskCanvas = forwardRef((props, ref) => {
                 // onTouchEnd={mouseUpHandler}
                 // onTouchMove={mouseMoveHandler}
                 ref={canvasRef} id="mask">
+                Your browser don't support html canvas.
             </canvas>
         </>
     )

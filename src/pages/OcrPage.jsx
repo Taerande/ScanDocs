@@ -1,14 +1,16 @@
 import { useEffect, useRef, useState } from "react"
-import CanvasContainer from "../components/Home/Canvas"
+import CanvasContainer from "../components/Home/CanvasContainer"
 import DragOverMenu from "../potals/DragOverMenu"
-import styles from "./Canvas.module.css"
+import styles from "./OcrPage.module.css"
 import LoadingSpinner from '../components/ui/LoadingSpinner'
-const Canvas = () => {
+const OcrPage = () => {
     const [opencvLoaded, setOpencvLaoded] = useState(true);
     const filInputRef = useRef();
     const [openDrag, setopenDrag] = useState(false);
     const [imgUrl, setImgUrl] = useState();
     const [imgLoad, setImgLoad] = useState(false);
+
+    // import opencv
     useEffect(() => {
         if (document.querySelector('script[src="https://docs.opencv.org/4.5.5/opencv.js"]')) {
             return;
@@ -19,11 +21,12 @@ const Canvas = () => {
         script.async = true;
         document.body.appendChild(script);
         setOpencvLaoded(true);
-    },[])
-    const handleDrop = async (event) => {
+    }, [])
+    
+    const handleDrop = (event) => {
+        setImgLoad(true);
         event.preventDefault();
         setImgUrl(null);
-        setImgLoad(true);
         let file;
         if (event.type === 'drop') {
             file = event.dataTransfer.files[0];
@@ -31,10 +34,11 @@ const Canvas = () => {
             file = event.target.files[0];
         }
         const reader = new FileReader();
+        reader.readAsDataURL(file);
         reader.onload = (event) => {
             setImgUrl(event.target.result);
+            setImgLoad(false);
         };
-        reader.readAsDataURL(file);
     };
     useEffect(() => {
         if(imgUrl) return
@@ -69,8 +73,7 @@ const Canvas = () => {
                 </div>
             </div>
         </DragOverMenu>}
-        <img className="image-responsive"
-            id="uploaded-image" src={imgUrl} style={{ display: 'none' }} />
+        <img id="uploaded-image" src={imgUrl} style={{ display: 'none' }} />
         <input type="file"  accept="image/*" ref={filInputRef} style={{display:'none'}} onChange={handleDrop} />
         
         {openDrag && <DragOverMenu onClose={() => setopenDrag(false)}>
@@ -80,8 +83,9 @@ const Canvas = () => {
                 </div>
             </div>
         </DragOverMenu>}
+
         {imgUrl ? <CanvasContainer changeImg={() => filInputRef.current.click()} /> : <>
-            {imgLoad ? <LoadingSpinner /> : <div className={styles['plz-upload']} onClick={() => filInputRef.current.click()}>
+            {!imgLoad ? <div className={styles['plz-upload']} onClick={() => filInputRef.current.click()}>
                 <div className={ styles['upload-message']}>
                     <div>
                         Upload Your Image📸
@@ -90,9 +94,10 @@ const Canvas = () => {
                         Click, Drag & Drop
                     </div>
                 </div>
-            </div>}
+            </div> : <LoadingSpinner width={8} size={50} color={"alert"}/>}
+        
         </>}
     </>
 }
 
-export default Canvas
+export default OcrPage

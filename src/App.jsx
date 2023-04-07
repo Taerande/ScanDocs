@@ -5,7 +5,7 @@ import Footer from './layouts/Footer'
 import Header from './layouts/Header'
 import Main from './layouts/Main'
 import Home from './pages/Home'
-import Canvas from './pages/Canvas'
+import OcrPage from './pages/OcrPage'
 import { useSelector } from 'react-redux';
 // Lazy loading
 const Test = React.lazy(() => import('./pages/Test'));
@@ -33,7 +33,7 @@ function App() {
         <Suspense fallback={<LoadingSpinner size="50" width="8" color="success"/>}>
           <Routes>
             <Route path='/' element={<Home/>}/>
-            <Route path='/ocr' element={<Canvas/>}/>
+            <Route path='/ocr' element={<OcrPage/>}/>
             <Route path='/test' element={<Test />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/howtouse' element={<Howtouse />} />

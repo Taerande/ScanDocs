@@ -5,6 +5,19 @@
     align-items: center;
     column-gap: 100px;
 }
+@media (max-width:768px) {
+    .container{
+        display: block;
+    }
+    .container >div::after{
+        content: "";
+        display: block;
+        width: 100%;
+        margin: 20px 0px;
+        border-bottom: 1px solid #2222;
+    }
+    
+}
 .container >div{
     text-align: center;
 }

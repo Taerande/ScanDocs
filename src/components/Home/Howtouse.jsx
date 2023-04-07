@@ -17,7 +17,7 @@ const carouselItem = [
     },
     {
         'text':"4. Select a language in the separated area below and perform OCR operations. If you don't like it, reset the region and language.",
-        'imgUrl':"./mask.JPG",
+        'imgUrl':"./result.JPG",
     },
 ]
 

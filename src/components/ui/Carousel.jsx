@@ -5,14 +5,7 @@ const Carousel = ({ item }) => {
     const carouselRef = useRef(null);
     const containerRef = useRef(null);
     const [selectedIdx, setSelectedIdx] = useState(0);
-    useEffect(() => {
-        addEventListener('resize', setCarouselHeight);
-        
-        return () => {
-            removeEventListener('resize', setCarouselHeight);
-        }
-    }, [])
-    const setCarouselHeight = () => {
+     const setCarouselHeight = () => {
         const images = document.querySelectorAll('img');
         const hwotouseImgs = Array.from(images).filter(img => img.alt === 'howtouse_image');
 
@@ -21,6 +14,14 @@ const Carousel = ({ item }) => {
         });
         containerRef.current.style.height = tallestImg.height + 50 + 'px';
     }
+    useEffect(() => {
+        addEventListener('resize', setCarouselHeight);
+        
+        return () => {
+            removeEventListener('load', setCarouselHeight);
+        }
+    }, []);
+    
 
     const nextBtn = () => {
         if(selectedIdx > item.length - 2) return
@@ -43,7 +44,7 @@ const Carousel = ({ item }) => {
                     return (<div key={index} className={styles['carousel-item']} style={{ left: `${index * 100}%` }}>
                         <div>
                             <div className={ styles.statement}>{ v.text }</div>
-                            <img src={v.imgUrl} alt="howtouse_image" className={ styles.image }/>
+                            <img onLoad={setCarouselHeight} src={v.imgUrl} alt="howtouse_image" className={ styles.image }/>
                         </div>
                     </div>)
                 })}
