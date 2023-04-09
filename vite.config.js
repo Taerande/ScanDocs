@@ -5,7 +5,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [react()],
   esbuild: {
-      drop: ['console', 'debugger'],
+      // drop: ['console', 'debugger'],
   },
   resolve: { 
     alias: { 

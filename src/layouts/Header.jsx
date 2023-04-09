@@ -24,7 +24,7 @@ const Header = () => {
                 </div>
                 <div className={styles.menu}>
                     <Link to='/ocr'>OCR</Link>
-                    <Link to='/mask'>Mask</Link>
+                    <Link to='/scan'>SCAN</Link>
                 </div>
             </div>
         </>

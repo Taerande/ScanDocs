@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react"
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle, useCallback } from "react"
 import styles from './MaskCanvas.module.css'
 import neswSvg from '../../../assets/svgs/resize-nesw.svg'
 import nwseSvg from '../../../assets/svgs/resize-nwse.svg'
-import { perspectiveTransform } from "../../../functions/transform"
+import { binaryTransform ,perspectiveTransform } from "../../../functions/transform"
 
 let resizeNESW = new Image();
 let resizeNWSE = new Image();
@@ -26,7 +26,7 @@ const MaskCanvas = forwardRef((props, ref) => {
         [150, 130],
         [50, 130]
     ]);
-    const draw = (ctx) => {
+    const draw = useCallback((ctx) => {
         // initailize background
         ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
         ctx.save();
@@ -61,16 +61,17 @@ const MaskCanvas = forwardRef((props, ref) => {
                 ctx.drawImage(resizeNWSE, el[0] - 8, el[1] - 8, 16, 16);
             }
         })
-    };
-    const setCanvasSize = () => {
-        if (uploadedImage.width > innerWidth) {
-            canvasRef.current.width = innerWidth * 0.9;
-            canvasRef.current.height = innerWidth * 0.9 * uploadedImage.height / uploadedImage.width;
+    });
+    const setCanvasSize = useCallback(() => {
+        const maxWidth = document.getElementById('canvas-container').clientWidth;
+        if (uploadedImage.width > maxWidth) {
+            canvasRef.current.width = maxWidth;
+            canvasRef.current.height = maxWidth * uploadedImage.height / uploadedImage.width;
         } else {
             canvasRef.current.width = uploadedImage.width;
             canvasRef.current.height = uploadedImage.height;
         }
-    }
+    })
     useEffect(() => {
         const canvas = canvasRef.current;
         // set canvas size
@@ -176,6 +177,9 @@ const MaskCanvas = forwardRef((props, ref) => {
     }
 
     const transformImage = () => {
+        if (location.pathname === '/scan') {
+            binaryTransform('main', 'main');
+        }
         perspectiveTransform('main', maskPoints);
         setCanvasSize()
     }

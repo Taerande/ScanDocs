@@ -7,6 +7,7 @@ import Main from './layouts/Main'
 import Home from './pages/Home'
 import OcrPage from './pages/OcrPage'
 import { useSelector } from 'react-redux';
+import ScanPage from './pages/ScanPage';
 // Lazy loading
 const Test = React.lazy(() => import('./pages/Test'));
 const Contact = React.lazy(() => import('./pages/Contact'));
@@ -34,6 +35,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home/>}/>
             <Route path='/ocr' element={<OcrPage/>}/>
+            <Route path='/scan' element={<ScanPage/>}/>
             <Route path='/test' element={<Test />} />
             <Route path='/contact' element={<Contact />} />
             <Route path='/howtouse' element={<Howtouse />} />

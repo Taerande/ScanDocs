@@ -1,5 +1,6 @@
 import {norm, subtract} from 'mathjs';
 export const binaryTransform = (inputId, outputId) => {
+  console.log(inputId, outputId);
 
   const cv = window.cv;
   

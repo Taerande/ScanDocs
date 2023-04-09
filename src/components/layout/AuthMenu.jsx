@@ -51,9 +51,6 @@ const AuthMenu = ({ auth }) => {
                     Options
                 </div>
                 <hr />
-                <Link className={styles.options} to='/mypage'>
-                    Mypage
-                </Link>
                 <Link className={styles.options} to='/mypage/mask'>
                     Mask
                 </Link>

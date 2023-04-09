@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react"
-import CanvasContainer from "../components/Home/CanvasContainer"
+import CanvasContainerForScan from "../components/Home/CanvasContainerForScan"
 import DragOverMenu from "../potals/DragOverMenu"
 import styles from "./OcrPage.module.css"
 import LoadingSpinner from '../components/ui/LoadingSpinner'
-const OcrPage = () => {
+const ScanPage = () => {
     const [opencvLoaded, setOpencvLaoded] = useState(true);
     const filInputRef = useRef();
     const [openDrag, setopenDrag] = useState(false);
@@ -86,12 +86,12 @@ const OcrPage = () => {
             </div>
         </DragOverMenu>}
 
-        {imgUrl ? <CanvasContainer changeImg={() => filInputRef.current.click()} /> : <>
+        {imgUrl ? <CanvasContainerForScan changeImg={() => filInputRef.current.click()} /> : <>
             {!imgLoad ? <>
                 <div className={styles['plz-upload']} onClick={() => filInputRef.current.click()}>
                 <div className={ styles['upload-message']}>
-                    <div style={{ color: 'var(--success-color)', fontSize:'3rem', fontWeight:900 }}>
-                        OCR
+                    <div style={{ color: 'var(--info-color)', fontSize:'3rem', fontWeight:900 }}>
+                        SCAN
                     </div>
                     <div>
                         Upload Your Image📸
@@ -106,4 +106,4 @@ const OcrPage = () => {
     </>
 }
 
-export default OcrPage
+export default ScanPage

@@ -1,6 +1,16 @@
 .canvas-container {
     position: relative;
 }
+.control-panel{
+    margin: 30px;
+    padding: 10px;
+    border-bottom: 1px solid #2222;
+    display: flex;
+    column-gap: 16px;
+}
+.control-panel >button{
+    /* border: 1px solid black; */
+}
 .opencv-loader-backdrop {
     position: fixed;
     top: 0;
@@ -24,4 +34,21 @@
     margin: 16px 0px;
     font-weight: 700;
     color: var(--success-color);
+}
+.donwload{
+    text-align: center;
+}
+.ctaBtn {
+    margin: 30px;
+    width: 300px;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    background-color: var(--success-color);
+    transition: scale 0.2s ease;
+}
+
+.ctaBtn:hover {
+    border: 2px solid var(--alert-color);
+    scale: 1.03;
 }

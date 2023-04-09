@@ -1,15 +1,17 @@
-import { Route, Routes } from "react-router-dom"
+import { Route, Routes, Navigate } from "react-router-dom"
 import Profile from "./Mypage/Profile"
 import Mask from "./Mypage/Mask"
-import Dashboard from "./Mypage/Dashboard"
+// import Dashboard from "./Mypage/Dashboard"
 
 
 const Mypage = () => {
     return (
         <Routes>
-            <Route path="/" element={<Dashboard/>} />
             <Route path="mask" element={<Mask/>} />
             <Route path="profile" element={<Profile/>} />
+            <Route
+              path="*"
+              element={<Navigate replace to="/" />} />
         </Routes>
     )
 

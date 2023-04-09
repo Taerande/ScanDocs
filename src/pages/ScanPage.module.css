@@ -27,6 +27,7 @@
     border: none;
     box-shadow: 5px 5px 5px grey;
 }
+
 .plz-upload {
     margin: 0 auto;
     font-weight: 700;
@@ -46,29 +47,34 @@
     transform: translate(-50%, -50%);
     font-size: 2rem;
 }
-.upload-message{
+
+.upload-message {
     height: 100%;
     text-align: center;
 }
 
-.opencv-loader-backdrop{
+.opencv-loader-backdrop {
     padding: 16px;
     background-color: white;
     border-radius: 15px;
 }
-.opencv-loader-content{
+
+.opencv-loader-content {
     text-align: center;
 }
-.opencv-loader-message{
+
+.opencv-loader-message {
     padding-top: 30px;
 }
-.method{
+
+.method {
     padding: 10px;
     font-size: 12px;
     font-weight: 600;
     color: var(--alert-color);
 }
-.loader{
+
+.loader {
     position: absolute;
     top: 50%;
     left: 50%;

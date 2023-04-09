@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from "react";
+import { useEffect, useRef, useState, forwardRef, useImperativeHandle, useCallback } from "react";
 import styles from './MainCanvas.module.css'
 import closeSvg from '../../../assets/svgs/close-circle.svg'
 import stretchSvg from '../../../assets/svgs/stretch-arrow.svg'
@@ -132,6 +132,7 @@ let stretchBtn = new Image();
 closeBtn.src = closeSvg;
 stretchBtn.src = stretchSvg;
 
+
 const MainCanvas = forwardRef((props, ref) => {
     const uploadedImage = document.getElementById('uploaded-image');
     const canvasRef = useRef(null);
@@ -146,7 +147,7 @@ const MainCanvas = forwardRef((props, ref) => {
     const [dx, setDx] = useState(0);
     const [dy, setDy] = useState(0);
 
-    const draw = (ctx) => {
+    const draw = useCallback((ctx) => {
         ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
         ctx.lineWidth = 3;
         let croppedImg;
@@ -172,10 +173,8 @@ const MainCanvas = forwardRef((props, ref) => {
             ctx.drawImage(closeBtn, x + w - radiusBtn, y - radiusBtn, diameterBtn, diameterBtn);
             ctx.drawImage(stretchBtn, x + w - radiusBtn, y + h - radiusBtn, diameterBtn, diameterBtn);
         });
-     
-      
-    };
-    const setCanvasSize = () => {
+    })
+    const setCanvasSize = useCallback(() => {
         const maxWidth = document.getElementById('canvas-container').clientWidth;
         if (uploadedImage.width > maxWidth) {
             canvasRef.current.width = maxWidth;
@@ -184,7 +183,7 @@ const MainCanvas = forwardRef((props, ref) => {
             canvasRef.current.width = uploadedImage.width;
             canvasRef.current.height = uploadedImage.height;
         }
-    }
+    })
     
     // 첫 canvas size 결정
     useEffect(() => {
@@ -212,8 +211,6 @@ const MainCanvas = forwardRef((props, ref) => {
             removeEventListener('resize', setCanvasSize);
         };
     }, [draw]);
-
-
 
     // 모드 설정
     const mouseMoveHandler = (e) => {
