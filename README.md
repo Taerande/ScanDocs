@@ -25,18 +25,19 @@
 # 특징 및 소개
 
 1.  소개
+---
 
 - Scan Docs 는 오픈소스인 OpenCV <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/OpenCV_Logo_with_text_svg_version.svg" height="36" alt="opencv_logo" /> 와 Tesseract<img src="https://github.com/naptha/tesseract.js/raw/master/docs/images/tesseract.png" height="36" alt="tesseract_logo" />을 활용하여 무료, 제한 없는 OCR 경험을 제공합니다.
 
 2. 특징
-
+---
 - OpenCV를 활용하여 이미지 전처리 (Perspective Transform, Binary Tansform) 을 활용하여 OCR 정확도를 높힙니다.
 - Tesseract는 무료이며 제한이 없습니다. 100여개 이상의 언어를 지원합니다.
 - Html Canvas에 OCR Box를 생성하여 원하는 부분만 OCR을 작업을 수행할 수 있습니다.
 - 사용한 모든 오픈소스들이 <img src="https://img.shields.io/badge/Apache2-000000?style=flat&logo=Apache&logoColor=D22128" height="20"> License 이므로 상업적 이용이 가능함.
 
 3. 한계
-
+---
 - Browser에서 모든것을 진행하므로 온라인으로 많은 리로스를 다운받아야함. (opencv, tesseract traineddata)
 - canvas page 로드될 때, OpenCV를 불러오게 함으로서 최초 로딩시 지연을 최소화 하였음.
 - 가끔씩 Tesseract traineddata 받아오는 것에 지연이 있음.
