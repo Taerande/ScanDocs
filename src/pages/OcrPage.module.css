@@ -31,14 +31,13 @@
     margin: 0 auto;
     font-weight: 700;
     word-spacing: -3px;
-    background: white;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 80%;
     max-width: 600px;
     border-radius: 30px;
-    border: 3px black dashed;
+    border: 3px var(--success-color) dashed;
     cursor: pointer;
     position: absolute;
     top: 50%;

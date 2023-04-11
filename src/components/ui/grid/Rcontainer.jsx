@@ -1,9 +1,9 @@
 import React from 'react';
 import './grid.css'
 
-const Rcontainer = ({ children }) => {
+const Rcontainer = ({ children, style }) => {
   return (
-    <div className="container">
+    <div className="container" style={style}>
       {children}
     </div>
   );

@@ -5,6 +5,9 @@ const Carousel = ({ item }) => {
     const carouselRef = useRef(null);
     const containerRef = useRef(null);
     const [selectedIdx, setSelectedIdx] = useState(0);
+    const [touchStartX, setTouchStartX] = useState(0);
+    const [touchEndX, setTouchEndX] = useState(0);
+
      const setCarouselHeight = () => {
         const images = document.querySelectorAll('img');
         const hwotouseImgs = Array.from(images).filter(img => img.alt === 'howtouse_image');
@@ -18,9 +21,28 @@ const Carousel = ({ item }) => {
         addEventListener('resize', setCarouselHeight);
         
         return () => {
-            removeEventListener('load', setCarouselHeight);
+            removeEventListener('resize', setCarouselHeight);
         }
     }, []);
+
+    const handleTouchStart = (e) => {
+        setTouchStartX(e.touches[0].clientX);
+    }
+
+    const handleTouchMove = (e) => {
+        setTouchEndX(e.touches[0].clientX);
+    }
+    const handleTouchEnd = () => {
+        const touchDistance = touchEndX - touchStartX;
+
+        if (touchDistance > 0 && selectedIdx > 0) {
+            prevBtn();
+        } else if (touchDistance < 0 && selectedIdx < item.length - 1) {
+            nextBtn();
+        }
+        setTouchStartX(0);
+        setTouchEndX(0);
+    }
     
 
     const nextBtn = () => {
@@ -38,8 +60,12 @@ const Carousel = ({ item }) => {
         setSelectedIdx(idx);
     }
     return (
-        <div className={styles.container} ref={containerRef}>
-            <div className={styles.carousel} ref={carouselRef}>
+        <div className={styles.container}
+            ref={containerRef}>
+            <div className={styles.carousel} ref={carouselRef} 
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}>
                 {item.map((v, index) => {
                     return (<div key={index} className={styles['carousel-item']} style={{ left: `${index * 100}%` }}>
                         <div>

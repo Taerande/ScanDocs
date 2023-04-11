@@ -175,7 +175,6 @@ const MaskCanvas = forwardRef((props, ref) => {
                 }
             }
     }
-
     const transformImage = () => {
         if (location.pathname === '/scan') {
             binaryTransform('main', 'main');

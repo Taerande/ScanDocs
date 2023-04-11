@@ -6,15 +6,15 @@ import Card from '@/components/ui/Card'
 const Mask = () => {
     return (
         <Rcontainer>
-            <Rrow>
-                Controll panel of mask
-                1. 마스크 만들기
+            <Rrow style={{padding:'10px'}}>
+                <Rcol>
+                    This is Mask Management Page
+                </Rcol>
             </Rrow>
             <Rrow>
-                <Rcol cols={4}>
+                <Rcol cols={12}>
                     <Card>
-                        asd
-
+                        It is developing a function that automatically performs OCR in consideration of the relative position of the OCR Box in the area created with four pins in the image, and exports the corresponding OCR results in JSON, csv format.
                     </Card>
                 </Rcol>
             </Rrow>

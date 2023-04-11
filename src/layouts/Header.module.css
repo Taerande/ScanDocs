@@ -35,3 +35,7 @@ a:hover{
     font-size: 32px;
     font-weight: 900;
 }
+.active{
+    color: var(--alert-color);
+    border-bottom: 1px solid var(--alert-color);
+}

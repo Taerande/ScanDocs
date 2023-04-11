@@ -2,8 +2,11 @@ import { useRef ,useEffect, useState } from 'react'
 import styles from './AuthMenu.module.css'
 import { logout } from '../../firebase/firebase';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { uiActions } from '../../store/ui-slice';
 const AuthMenu = ({ auth }) => {
     const [authMenuOpen, setAuthMenuOpen] = useState(false);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const authMenuRef = useRef(null);
     const [fade, setFade] = useState();
@@ -28,6 +31,11 @@ const AuthMenu = ({ auth }) => {
     }, [authMenuRef]);
     const logoutHandler = () => {
         logout().then((res) => {
+            dispatch(uiActions.toggleSnackbar({
+                value: true,
+                type: 'alert',
+                message: 'Log-out Success!'
+            }))
             navigate('/');
         }).catch((er) => {
             navigate('/');
@@ -51,13 +59,13 @@ const AuthMenu = ({ auth }) => {
                     Options
                 </div>
                 <hr />
-                <Link className={styles.options} to='/mypage/mask'>
+                <Link className={styles.options} to='/mypage/mask' style={{color:'var(--dark-color)'}}>
                     Mask
                 </Link>
-                <Link className={styles.options} to='/mypage/profile'>
+                <Link className={styles.options} to='/mypage/profile' style={{color:'var(--dark-color)'}}>
                     Profile
                 </Link>
-                <div className={styles.options} onClick={logoutHandler}>
+                <div className={styles.options} onClick={logoutHandler} style={{color:'var(--alert-color)'}}>
                     Log Out
                 </div>
             </div>}

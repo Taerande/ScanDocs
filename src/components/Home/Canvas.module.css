@@ -2,11 +2,13 @@
     position: relative;
 }
 .control-panel{
-    margin: 30px;
-    padding: 10px;
+    margin: 8px;
+    padding: 8px;
     border-bottom: 1px solid #2222;
     display: flex;
+    flex-wrap: wrap;
     column-gap: 16px;
+    row-gap: 16px;
 }
 .control-panel >button{
     /* border: 1px solid black; */

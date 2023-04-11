@@ -1,13 +1,24 @@
-import { useEffect, useRef, useState } from "react"
+import { useRef, useState } from "react"
 import styles from './Canvas.module.css'
 import MaskCanvas from "./Canvas/MaskCanvas";
 import MainCanvas from "./Canvas/MainCanvas";
+import { useDispatch } from "react-redux";
+import { uiActions } from "../../store/ui-slice";
 const CanvasContainerForScan = ({changeImg}) => {
     const maskCanvas = useRef(null);
     const mainCanvas = useRef(null);
     const [openMask, setOpenMask] = useState(false);
+    const dispatch = useDispatch();
 
     const TransformHandler = () => {
+        if (!openMask) {
+            dispatch(uiActions.toggleSnackbar({
+                value: true,
+                type: 'alert',
+                message:'Make mask and select Area to scan.'
+            }))
+            return
+        }
         maskCanvas.current.transformImage();
         setOpenMask(false);
         document.getElementById('uploaded-image').src = document.getElementById('result').toDataURL();
@@ -28,7 +39,7 @@ const CanvasContainerForScan = ({changeImg}) => {
                     changeImg();
                 }}>New Image</button>
                 <button onClick={TransformHandler}>Transform Image</button>
-                <button onClick={() => setOpenMask(!openMask)}>make Mask</button>
+                <button onClick={() => setOpenMask(!openMask)}>Make Mask</button>
             </div>
             <div className={styles['canvas-container']} id="canvas-container">
                 <MainCanvas ref={mainCanvas}/>

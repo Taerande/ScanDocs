@@ -7,6 +7,8 @@ import { binaryTransform } from "../../../functions/transform";
 import ProgressBar from "../../ui/ProgressBar";
 import LoadingSpinner from "../../ui/LoadingSpinner";
 import MultiSelect from "../../ui/MultiSelect";
+import { useDispatch } from "react-redux";
+import { uiActions } from "../../../store/ui-slice";
 const colorSet = [
   "#1f77b4", // Blue
   "#ff7f0e", // Orange
@@ -136,6 +138,7 @@ stretchBtn.src = stretchSvg;
 const MainCanvas = forwardRef((props, ref) => {
     const uploadedImage = document.getElementById('uploaded-image');
     const canvasRef = useRef(null);
+    const dispatch = useDispatch();
     
     const [rectangles, setRectangles] = useState([]);
     const [mode, setMode] = useState('');
@@ -311,6 +314,8 @@ const MainCanvas = forwardRef((props, ref) => {
 
     }
     const createRectHandler = () => {
+        const isProgress = rectangles.find(v => v.loading === true);
+        if(isProgress) return
         setRectangles([{
             id: rectangles.length,
             color: colorSet[rectangles.length % 10],
@@ -329,40 +334,61 @@ const MainCanvas = forwardRef((props, ref) => {
         setRectangles([]);
     }
 
-    const ocrImgHandler = (id, index) => {
-        rectangles[index].loading = true;
+    const ocrImgHandler = useCallback((id, index) => {
+
+        const idxOfRect = rectangles.findIndex(v => v.id === id);
+        if (rectangles[idxOfRect].lang === '') {
+            dispatch(uiActions.toggleSnackbar({
+                value: true,
+                type: 'alert',
+                message:'You must select at least one language.'
+            }))
+            return;
+        }
+
+        rectangles[idxOfRect].loading = true;
+        setRectangles([...rectangles]);
+
         binaryTransform(`canvas${id}`, `result-canvas${id}`);
         Tesseract.recognize(
-        document.getElementById(`result-canvas${id}`).toDataURL(),
-        rectangles[index].lang,
+            document.getElementById(`result-canvas${id}`).toDataURL(),
+            rectangles[index].lang,
             {
                 logger: m => {
                     setRectangles(prevRectangles => {
                         const newRectangles = [...prevRectangles];
-                        // const idxOfRect = newRectangles.findIndex(v => v.id === id);
-                        newRectangles[index].progress = Math.floor(m.progress * 100);
-                        newRectangles[index].statement = m.status;
+                        newRectangles[idxOfRect].progress = Math.floor(m.progress * 100);
+                        newRectangles[idxOfRect].statement = m.status;
                         return newRectangles;
                     });
                 }
             }
         ).then(({ data: { text } }) => {
-        rectangles[index].loading = false;
-         setRectangles(prevRectangles => {
-             const newRectangles = [...prevRectangles];
-             const idxOfRect = newRectangles.findIndex(v => v.id === id);
-             newRectangles[idxOfRect].result = text;
+            const newRectangles = [...rectangles];
+            newRectangles[idxOfRect].loading = false;
+            newRectangles[idxOfRect].result = text;
+            setRectangles(newRectangles);
+        }).catch((er) => {
+            console.log(er);
+        })
+    }, [rectangles]);
+    const setOcrLang = (lang, index) => {
+        setRectangles(prevRectangles => {
+            const newRectangles = [...prevRectangles];
+             newRectangles[index].lang = lang;
                 return newRectangles;
             });
-        })
     }
-    const setOcrLang = (lang, index) => {
-        rectangles[index].lang = lang;
+    const onlyBinary = () => {
+        if (location.pathname === '/scan') {
+            binaryTransform('main', 'main');
+        }
     }
     
     useImperativeHandle(ref, () => ({
         createRectHandler,
-        clearRectHandler
+        clearRectHandler,
+        onlyBinary
      }));
     
      return (
@@ -376,9 +402,9 @@ const MainCanvas = forwardRef((props, ref) => {
             <div className={styles['cropped-container']}>
                 {rectangles.map((v, idx) => {
                     return (
-                        <div key={idx} style={{ border: `2px ${v.color} dashed` }} className={styles['cropped-container']}>
+                        <div key={v.id} style={{ border: `2px ${v.color} dashed` }} className={styles['cropped-container']}>
                             <div className={ styles['cropped-control-panel']}>
-                                <MultiSelect options={languages} onChange={(result) => setOcrLang(result, idx)} />
+                                <MultiSelect key={v.id} options={languages} onChange={(result) => setOcrLang(result, idx)} />
                                  <button disabled={v.loading} onClick={() => ocrImgHandler(v.id, idx)}>
                                     {v.loading ?
                                         <LoadingSpinner />

@@ -1,4 +1,5 @@
 .footer{
+    margin-top: 50px;
     padding-top: 16px;
     bottom: 0;
     font-size: 14px;
@@ -27,9 +28,6 @@
     color: var(--success-color);
     text-decoration: none;
 }
-/* .category > a:visited{
-    text-decoration: none;
-} */
 .category > a::after{
     display: block;
     content: "";
@@ -41,12 +39,9 @@
     width: 100%;
 }
 .copyright{
-    padding-bottom: 16px;
-    text-align: center;
-}
-.copyright::before{
-    display: block;
-    margin: 8px 0px;
-    content: "";
-    border-top: 1px solid gray;
+    /* max-width: 1000px; */
+    padding: 10px 20px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 }

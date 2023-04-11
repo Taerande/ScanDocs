@@ -15,7 +15,7 @@
     left: 50%;
     transform: translateX(-50%);
     content: "";
-    width: 120%;
+    width: 100%;
     border: 1px solid var(--dark-color);
 }
 .title::before{
@@ -24,7 +24,7 @@
     left: 50%;
     transform: translateX(-50%);
     content: "";
-    width: 120%;
+    width: 100%;
     border: 1px solid var(--dark-color);
 }
 .cta
@@ -33,9 +33,10 @@
     text-align: center;
 }
 .ctaBtn{
-    margin: 30px;
-    width: 300px;
+    width: 80%;
     color: white;
+    max-width: 800px;
+    margin: 0 auto;
     font-size: 18px;
     font-weight: 700;
     background-color: var(--success-color);
@@ -43,5 +44,5 @@
 }
 .ctaBtn:hover{
     border: 3px solid black;
-    scale: 1.2;
+    scale: 1.05;
 }

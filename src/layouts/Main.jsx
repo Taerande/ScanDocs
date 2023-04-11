@@ -1,6 +1,15 @@
+import { useNavigate } from 'react-router-dom';
 import styles from './Main.module.css'
+import { useEffect } from 'react';
 const Main = (props) => {
-    return <div className={styles.main}>
+    const navigate = useNavigate();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        return () => {
+        
+        }
+    }, [navigate]);
+    return <div className={styles.main} id="main-layout">
         {props.children}
     </div>
 }

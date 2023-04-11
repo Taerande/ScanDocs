@@ -7,21 +7,27 @@ const Footer = () => {
                 <div>Services</div>
                 <Link to="/">Home</Link>
                 <Link to="/ocr">OCR</Link>
-                <Link to="/ocr">Mask</Link>
+                <Link to="/scan">SCAN</Link>
             </div>
             <div className={styles.category}>
-                <div>Policy</div>
-                <a>Terms</a>
+                <div>Terms & Policies</div>
+                <Link to="/term">Terms</Link>
+                <Link to="/policy">Policies</Link>
             </div>
             <div className={styles.category}>
                 <div>Help</div>
-                <Link to="/contact">Contact</Link>
-                <Link to="/howtouse">How to Use</Link>
+                <Link to="/feat">Feature</Link>
+            </div>
+            <div>
             </div>
         </div>
-        <div className={ styles.copyright}>
-            { `2023 ~ ${new Date().getFullYear()}` } Scan Docs
-            
+        <div className={styles.copyright}>
+            <div>
+                {`2023 - ${new Date().getFullYear()}`} Scan Docs
+            </div>
+            <div>
+                Contact | <a href="mailto:scandocs.web@gmail.com">scandocs.web@gmail.com</a>
+            </div>
         </div>
     </div>
 
